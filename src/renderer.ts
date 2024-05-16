@@ -1,11 +1,16 @@
+
 const form = document.querySelector("form");
 const inputs = form.querySelectorAll("input");
 
 document.addEventListener("DOMContentLoaded", async () => {
   const storeShortcuts = (await api.readFromStore()).shortcuts;
   Array.from(inputs).forEach((input) => {
-    if (storeShortcuts[input.dataset.type][input.dataset.index]) {
-      input.value = storeShortcuts[input.dataset.type][input.dataset.index];
+    const actionType = input.dataset.type;
+    const index = input.dataset.index;
+    const shortcut = storeShortcuts[input.dataset.type][input.dataset.index];
+    if (shortcut) {
+      input.value = shortcut;
+      api.addShortcut({actionType, index, shortcut});
     }
   })
 })
