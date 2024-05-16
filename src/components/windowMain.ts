@@ -6,13 +6,13 @@ export let windowMain:BrowserWindow;
 export const createWindowMain = async () => {
   windowMain = new BrowserWindow({
     title: "Win11 Virtual Desktop Manager (VDM)",
-    // show: false,
+    show: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
     }
   })
 
-  windowMain.webContents.openDevTools();
+  // windowMain.webContents.openDevTools();
   windowMain.on("minimize", () => windowMain.hide());
   windowMain.on("close", (e) => {e.preventDefault(); windowMain.hide()});
 
