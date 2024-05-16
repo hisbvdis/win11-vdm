@@ -39,6 +39,7 @@
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
     "electron-store": "^9.0.0",
-    "koffi": "^2.8.8"
+    "koffi": "^2.8.8",
+    "mutative": "^1.0.5"
   }
 }

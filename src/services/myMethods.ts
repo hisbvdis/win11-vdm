@@ -5,8 +5,6 @@ import { desktopHWND, imagesPath } from "../config/constants";
 import { EnumWindows, GetForegroundWindow, SetForegroundWindow } from "./user32";
 import { GetCurrentDesktopNumber, GetDesktopCount, GetWindowDesktopNumber, GoToDesktopNumber, MoveWindowToDesktopNumber } from "./virtualDesktopAccessor";
 
-let desktopWindows:number[][] = new Array(9).fill([]).map((_, i) => getAllWindowsFromDesktopNumber(i));
-
 const getAllWindowsFromDesktopNumber = (desktopNumber:number=GetCurrentDesktopNumber()) => {
   const hwndArray:number[] = [];
   const activeWinHNDW = GetForegroundWindow();
@@ -21,6 +19,8 @@ const getAllWindowsFromDesktopNumber = (desktopNumber:number=GetCurrentDesktopNu
   }, 0)
   return hwndArray;
 }
+
+let desktopWindows:number[][] = new Array(9).fill([]).map((_, i) => getAllWindowsFromDesktopNumber(i));
 
 export const goToDesktop = (targetDesktopNumber:number) => {
   if (GetDesktopCount() < targetDesktopNumber - 1) return;
