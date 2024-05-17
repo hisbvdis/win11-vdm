@@ -26,7 +26,7 @@ export const goToDesktop = (targetDesktopNumber:number) => {
   if (GetDesktopCount() < targetDesktopNumber - 1) return;
   const currentDesktopNumber = GetCurrentDesktopNumber();
   desktopWindows[currentDesktopNumber] = getAllWindowsFromDesktopNumber(currentDesktopNumber);
-  desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
+  // desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
   GoToDesktopNumber(targetDesktopNumber);
   // Move related windows to target desktop
   if (desktopWindows[targetDesktopNumber].length) {
@@ -35,6 +35,7 @@ export const goToDesktop = (targetDesktopNumber:number) => {
   // Set focus on last window
   SetForegroundWindow(desktopWindows[targetDesktopNumber].at(-1) ?? desktopHWND);
   tray.setImage(nativeImage.createFromPath(path.join(imagesPath, `${targetDesktopNumber + 1}.png`)));
+  console.log( "goto:", desktopWindows )
 }
 
 export const moveWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetForegroundWindow()) => {
@@ -45,14 +46,15 @@ export const moveWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetF
   desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
   // Set focus on last window
   SetForegroundWindow(desktopWindows[GetCurrentDesktopNumber()].at(-1) ?? desktopHWND);
+  console.log( "move:", desktopWindows )
 }
 
 export const copyWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetForegroundWindow()) => {
   if (GetDesktopCount() < targetDesktopNumber - 1) return;
   const currentDesktopNumber = GetCurrentDesktopNumber();
-  // Add "window HWND" to the end of the current desktop
+  // Add "window HWND" to the end of the current and target desktop
   desktopWindows[currentDesktopNumber] = getAllWindowsFromDesktopNumber(currentDesktopNumber);
   desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
   desktopWindows[targetDesktopNumber] = desktopWindows[targetDesktopNumber].filter((windowHWND) => windowHWND !== hwnd).concat(hwnd);
-  console.log( desktopWindows[targetDesktopNumber] )
+  console.log( "copy:", desktopWindows )
 }
