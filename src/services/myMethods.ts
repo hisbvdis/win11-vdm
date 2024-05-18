@@ -2,8 +2,8 @@ import { nativeImage } from "electron";
 import path from "path";
 import { tray } from "../components/tray";
 import { desktopHWND, imagesPath } from "../config/constants";
-import { EnumWindows, GetForegroundWindow, SetForegroundWindow } from "./user32";
-import { GetCurrentDesktopNumber, GetDesktopCount, GetWindowDesktopNumber, GoToDesktopNumber, MoveWindowToDesktopNumber } from "./virtualDesktopAccessor";
+import { EnumWindows, GetForegroundWindow, SetForegroundWindow, getOwnerWindow } from "./user32";
+import { GetCurrentDesktopNumber, GetWindowDesktopNumber, GoToDesktopNumber, MoveWindowToDesktopNumber } from "./virtualDesktopAccessor";
 
 const getAllWindowsFromDesktopNumber = (desktopNumber:number=GetCurrentDesktopNumber()) => {
   const hwndArray:number[] = [];
@@ -20,37 +20,35 @@ const getAllWindowsFromDesktopNumber = (desktopNumber:number=GetCurrentDesktopNu
   return hwndArray;
 }
 
-let desktopWindows:number[][] = new Array(9).fill([]).map((_, i) => getAllWindowsFromDesktopNumber(i));
+let desktopWindows:number[][] = [];
 
 export const goToDesktop = (targetDesktopNumber:number) => {
-  if (GetDesktopCount() < targetDesktopNumber - 1) return;
   const currentDesktopNumber = GetCurrentDesktopNumber();
   desktopWindows[currentDesktopNumber] = getAllWindowsFromDesktopNumber(currentDesktopNumber);
   // desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
   GoToDesktopNumber(targetDesktopNumber);
   // Move related windows to target desktop
-  if (desktopWindows[targetDesktopNumber].length) {
+  if (desktopWindows[targetDesktopNumber]?.length) {
     desktopWindows[targetDesktopNumber].forEach((hwnd) => MoveWindowToDesktopNumber(hwnd, targetDesktopNumber));
   }
   // Set focus on last window
-  SetForegroundWindow(desktopWindows[targetDesktopNumber].at(-1) ?? desktopHWND);
+  SetForegroundWindow(desktopWindows[targetDesktopNumber]?.at(-1) ?? desktopHWND);
   tray.setImage(nativeImage.createFromPath(path.join(imagesPath, `${targetDesktopNumber + 1}.png`)));
   console.log( "goto:", desktopWindows )
 }
 
 export const moveWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetForegroundWindow()) => {
-  if (GetDesktopCount() < targetDesktopNumber - 1) return;
-  MoveWindowToDesktopNumber(hwnd, targetDesktopNumber);
+  const movableWindowHWND = getOwnerWindow(hwnd) || hwnd;
+  MoveWindowToDesktopNumber(movableWindowHWND, targetDesktopNumber);
   // Delete "windows HWND" from all desktops
-  desktopWindows = desktopWindows.map((desktop) => desktop.filter((windowHWND) => windowHWND !== hwnd));
+  desktopWindows = desktopWindows.map((desktop) => desktop.filter((windowHWND) => windowHWND !== movableWindowHWND));
   desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
   // Set focus on last window
-  SetForegroundWindow(desktopWindows[GetCurrentDesktopNumber()].at(-1) ?? desktopHWND);
+  SetForegroundWindow(desktopWindows[GetCurrentDesktopNumber()]?.at(-1) ?? desktopHWND);
   console.log( "move:", desktopWindows )
 }
 
 export const copyWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetForegroundWindow()) => {
-  if (GetDesktopCount() < targetDesktopNumber - 1) return;
   const currentDesktopNumber = GetCurrentDesktopNumber();
   // Add "window HWND" to the end of the current and target desktop
   desktopWindows[currentDesktopNumber] = getAllWindowsFromDesktopNumber(currentDesktopNumber);
