@@ -12,5 +12,5 @@ export const createTray = ():void => {
     { label: "Show", click: () => windowMain.show() },
     { label: "Exit", click: () => app.exit() },
   ]));
-  tray.on("click", () => windowMain.show())
+  tray.on("double-click", () => windowMain.show())
 }
