@@ -52,7 +52,7 @@ export const copyWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetF
   const currentDesktopNumber = GetCurrentDesktopNumber();
   // Add "window HWND" to the end of the current and target desktop
   desktopWindows[currentDesktopNumber] = getAllWindowsFromDesktopNumber(currentDesktopNumber);
-  desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
+  // desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
   desktopWindows[targetDesktopNumber] = desktopWindows[targetDesktopNumber].filter((windowHWND) => windowHWND !== hwnd).concat(hwnd);
   console.log( "copy:", desktopWindows )
 }
