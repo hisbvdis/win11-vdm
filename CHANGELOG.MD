@@ -1,5 +1,8 @@
 # Changelog
 
+**0.0.6**
+- Fixes: Copy window function "filter" method
+___
 **0.0.5**
 - Fixed: Copy windows to the desktop cleared other copied windows
 ___
