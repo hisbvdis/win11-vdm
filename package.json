@@ -1,7 +1,7 @@
 {
   "name": "win11-vdm",
   "productName": "win11-vdm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
   "scripts": {
