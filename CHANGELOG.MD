@@ -1,5 +1,8 @@
 # Changelog
 
+**0.0.7**
+- Fixes: Move window function "filter" method
+___
 **0.0.6**
 - Fixes: Copy window function "filter" method
 ___
