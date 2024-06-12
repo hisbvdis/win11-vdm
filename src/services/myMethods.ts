@@ -42,7 +42,8 @@ export const moveWindowToDesktop = (targetDesktopNumber:number, hwnd:number=GetF
   MoveWindowToDesktopNumber(movableWindowHWND, targetDesktopNumber);
   // Delete "windows HWND" from all desktops
   desktopWindows = desktopWindows.map((desktop) => desktop.filter((windowHWND) => windowHWND !== movableWindowHWND));
-  desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
+  // desktopWindows[targetDesktopNumber] = getAllWindowsFromDesktopNumber(targetDesktopNumber);
+  desktopWindows[targetDesktopNumber] = (desktopWindows?.[targetDesktopNumber] ?? []).concat(hwnd);
   // Set focus on last window
   SetForegroundWindow(desktopWindows[GetCurrentDesktopNumber()]?.at(-1) ?? desktopHWND);
   console.log( "move:", desktopWindows )
