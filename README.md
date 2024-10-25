@@ -7,4 +7,10 @@
 - https://github.com/MScholtes/VirtualDesktop
 
 **Win32 API for Node.js**
+
 https://github.com/waitingsong/node-win32-api
+
+**FFI**
+
+- https://koffi.dev/
+- https://github.com/zhangyuang/node-ffi-rs
