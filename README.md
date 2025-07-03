@@ -5,10 +5,10 @@
 ## Useful libraries
 **C# command line tool to manage virtual desktops in Windows 10**
 - https://github.com/MScholtes/VirtualDesktop
+- https://github.com/Ciantic/VirtualDesktopAccessor
 
 **Win32 API for Node.js**
-
-https://github.com/waitingsong/node-win32-api
+- https://github.com/waitingsong/node-win32-api
 
 **FFI**
 
